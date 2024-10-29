@@ -75,12 +75,24 @@ router.get('/ac/g/:groupId/c/:contestId/p/:page', async (req, res) => {
 });
 
 // Static files
-app.use(express.static(path.join(__dirname, 'public')));
 
+
+
+
+// Serve static files directly from the root directory
+app.use(express.static(__dirname));
+
+// Use the router for API calls
 app.use('/ac', router);
 
+// Serve `index.html` for the root route
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'index.html'));
+});
+
+// Serve `error.html` for all undefined routes
 app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'error.html'));
+    res.sendFile(path.join(__dirname, 'error.html'));
 });
 
 const PORT = process.env.PORT || 3000;
