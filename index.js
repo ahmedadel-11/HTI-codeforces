@@ -16,26 +16,32 @@ function strip(string) {
   return string.replace(/^\s+|\s+$/g, '');
 }
 
-// to get the dom
-async function getDom(url) {
-    return axios.get(url, {
-        headers: {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.150 Safari/537.36',
-            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-            'Accept-Language': 'en-US,en;q=0.5',
-            'Referer': 'https://codeforces.com/'
-        }
-    })
-    .then((res) => {
-        const dom = new JSDOM(res.data);
-        return dom.window.document;
-    })
-    .catch((err) => {
-        console.error('Error fetching DOM:', err.message);
-        throw err; // rethrow the error to handle it later
-    });
-}
+// Array of user agents
+const userAgents = [
+  'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.150 Safari/537.36',
+  'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
+  // Add more user agents here
+];
 
+async function getDom(url) {
+  const userAgent = userAgents[Math.floor(Math.random() * userAgents.length)];
+  return axios.get(url, {
+    headers: {
+      'User-Agent': userAgent,
+      'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+      'Accept-Language': 'en-US,en;q=0.5',
+      'Referer': 'https://codeforces.com/'
+    }
+  })
+  .then((res) => {
+    const dom = new JSDOM(res.data);
+    return dom.window.document;
+  })
+  .catch((err) => {
+    console.error('Error fetching DOM:', err.message);
+    throw err;
+  });
+}
 
 // get ac solutions for each contestant
 const getAc = async(url) => {
