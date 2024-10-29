@@ -20,7 +20,10 @@ function strip(string) {
 async function getDom(url) {
     return axios.get(url, {
         headers: {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.150 Safari/537.36'
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.150 Safari/537.36',
+            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+            'Accept-Language': 'en-US,en;q=0.5',
+            'Referer': 'https://codeforces.com/'
         }
     })
     .then((res) => {
@@ -32,6 +35,7 @@ async function getDom(url) {
         throw err; // rethrow the error to handle it later
     });
 }
+
 
 // get ac solutions for each contestant
 const getAc = async(url) => {
