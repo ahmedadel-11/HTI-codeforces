@@ -100,13 +100,16 @@ const getAc = async(url) => {
             },
         }
     }
-    catch (err){
-        return {
-            'status': 'FAILED',
-            'result': 'There is something wrong :(',
-            'err' : err.message
-        }
-    }
+catch (err) {
+    console.error("Error fetching contest data:", err);
+    return {
+        'status': 'FAILED',
+        'result': 'There is something wrong :(',
+        'errorMessage': err.message,
+        'stackTrace': err.stack
+    };
+}
+
 }
 
 router.get('/g/:groupId/c/:contestId/p/:page', async (req, res) =>{
